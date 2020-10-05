@@ -1,0 +1,119 @@
+> use company
+switched to db company
+
+> db.createCollection("Employee1");
+{ "ok" : 1 }
+
+> db.createCollection("Department1");
+{ "ok" : 1 }
+
+> db.Employee1.insert({_id:1, "EmployeeID":"2017069", "Name":"Yamuna B S", "Department":"CSE", "Age":21,DeptNo:1001});
+WriteResult({ "nInserted" : 1 })
+
+> db.Employee1.insert({_id:2, "EmployeeID":"2017035", "Name":"Sadhana", "Department":"ISE", "Age":31,DeptNo:1002});
+WriteResult({ "nInserted" : 1 })
+
+> db.Employee1.save({_id:3, "EmployeeID":"2017522", "Name":"SHUBHA", "Department":"ECE", "Age":32,DeptNo:1003});
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0, "_id" : 3 })
+
+> db.Employee1.update({_id:4, "EmployeeID":"2016069", "Name":"Raghavendra", "Department":"CSE", "Age":21},{$set:{DeptNo:1001}},{upsert:true});
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0, "_id" : 4 })
+
+> db.Employee1.update({_id:5, "EmployeeID":"2016400", "Name":"Salina", "Department":"ME", "Age":32},{$set:{DeptNo:1005}},{upsert:true});
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0, "_id" : 5 })
+
+>  db.Department1.insert({_id:1,deptname:"CSE",deptno:1001});
+WriteResult({ "nInserted" : 1 })
+
+> db.Department1.insert({_id:2,deptname:"ISE",deptno:1002});
+WriteResult({ "nInserted" : 1 })
+
+> db.Department1.update({_id:3,deptname:"ECE"},{$set:{deptno:1003}},{upsert:true});
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0, "_id" : 3 })
+
+> db.Department1.save({_id:4,deptname:"EEE",deptno:1004});
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0, "_id" : 4 })
+
+> db.Department1.save({_id:5,deptname:"ME",deptno:1005});
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0, "_id" : 5 })
+
+> db.getCollection("Employee1").find({}).pretty()
+{
+        "_id" : 1,
+        "EmployeeID" : "2017069",
+        "Name" : "Yamuna B S",
+        "Department" : "CSE",
+        "Age" : 21,
+        "DeptNo" : 1001
+}
+{
+        "_id" : 2,
+        "EmployeeID" : "2017035",
+        "Name" : "Sadhana",
+        "Department" : "ISE",
+        "Age" : 31,
+        "DeptNo" : 1002
+}
+{
+        "_id" : 3,
+        "EmployeeID" : "2017522",
+        "Name" : "SHUBHA",
+        "Department" : "ECE",
+        "Age" : 32,
+        "DeptNo" : 1003
+}
+{
+        "_id" : 4,
+        "Age" : 21,
+        "Department" : "CSE",
+        "EmployeeID" : "2016069",
+        "Name" : "Raghavendra",
+        "DeptNo" : 1001
+}
+{
+        "_id" : 5,
+        "Age" : 32,
+        "Department" : "ME",
+        "EmployeeID" : "2016400",
+        "Name" : "Salina",
+        "DeptNo" : 1005
+}
+
+> db.getCollection("Department1").find({}).pretty()
+{ "_id" : 1, "deptname" : "CSE", "deptno" : 1001 }
+{ "_id" : 2, "deptname" : "ISE", "deptno" : 1002 }
+{ "_id" : 3, "deptname" : "ECE", "deptno" : 1003 }
+{ "_id" : 4, "deptname" : "EEE", "deptno" : 1004 }
+{ "_id" : 5, "deptname" : "ME", "deptno" : 1005 }
+
+> db.Employee1.save({_id:7, "EmployeeID":"2017055", "Name":"Anagha", "Department":"CSE", "Age":32,DeptNo:1001});
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0, "_id" : 7 })
+
+> db.Employee1.update({_id:4},{$set:{DOJ:"12 sep","Age":30}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.Employee1.find({_id:4});
+{ "_id" : 4, "Age" : 30, "Department" : "CSE", "EmployeeID" : "2016069", "Name" : "Raghavendra", "DeptNo" : 1001, "DOJ" : "12 sep" }
+
+> db.Employee1.update({_id:4},{$unset:{DOJ:""}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.Employee1.find({_id:4});
+{ "_id" : 4, "Age" : 30, "Department" : "CSE", "EmployeeID" : "2016069", "Name" : "Raghavendra", "DeptNo" : 1001 }
+
+> db.Employee1.find({Name:/^A/});
+{ "_id" : 7, "EmployeeID" : "2017055", "Name" : "Anagha", "Department" : "CSE", "Age" : 32, "DeptNo" : 1001 }
+
+> db.Employee1.find({ "Age": { "$gt": 30 }});
+{ "_id" : 2, "EmployeeID" : "2017035", "Name" : "Sadhana", "Department" : "ISE", "Age" : 31, "DeptNo" : 1002 }
+{ "_id" : 3, "EmployeeID" : "2017522", "Name" : "SHUBHA", "Department" : "ECE", "Age" : 32, "DeptNo" : 1003 }
+{ "_id" : 5, "Age" : 32, "Department" : "ME", "EmployeeID" : "2016400", "Name" : "Salina", "DeptNo" : 1005 }
+{ "_id" : 7, "EmployeeID" : "2017055", "Name" : "Anagha", "Department" : "CSE", "Age" : 32, "DeptNo" : 1001 }
+
+>  db.Employee1.find({ "DeptNo": { "$gte": 1001,"$lte":1005}},{Name:1,DeptNo:1,_id:0});
+{ "Name" : "Yamuna B S", "DeptNo" : 1001 }
+{ "Name" : "Sadhana", "DeptNo" : 1002 }
+{ "Name" : "SHUBHA", "DeptNo" : 1003 }
+{ "Name" : "Raghavendra", "DeptNo" : 1001 }
+{ "Name" : "Salina", "DeptNo" : 1005 }
+{ "Name" : "Anagha", "DeptNo" : 1001 }
