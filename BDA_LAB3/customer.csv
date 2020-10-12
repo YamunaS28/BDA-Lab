@@ -1,0 +1,5 @@
+{"_id":1.0,"cust_id":"cu01","acc_bal":10000.0,"acc_type":"X"}
+{"_id":2.0,"cust_id":"cu01","acc_bal":2000.0,"acc_type":"X"}
+{"_id":3.0,"cust_id":"cu02","acc_bal":3000.0,"acc_type":"Y"}
+{"_id":4.0,"cust_id":"cu03","acc_bal":4000.0,"acc_type":"Z"}
+{"_id":5.0,"cust_id":"cu04","acc_bal":5000.0,"acc_type":"Z"}
