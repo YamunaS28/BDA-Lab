@@ -1,0 +1,91 @@
+1) hive>create database if not exists Employee comment 'skn bda hive';
+   OK
+Time taken: 0.58 seconds
+
+
+
+2)hive> use Employee;
+OK
+
+
+3)hive> create external table if not exists Employee (Empl_ID int, Emp_Name String, Designation String, Salary int) row format delimited fields terminated by ',' lines terminated by '\n';
+OK
+
+
+4)hive> load data local inpath '/home/yamunabs/Desktop/employee.txt' overwrite into table Employee;
+Loading data to table employee.employee
+OK
+Time taken: 1.309 seconds
+
+
+4)hive> select * from Employee;
+OK
+1101	Yamuna B S	Manager	45000
+1102	Raghavendra	Developer	40000
+1103	Obed Junias	Analyst	35000
+1104	Niranjan V S	Operations	25000
+Time taken: 2.442 seconds, Fetched: 4 row(s)
+
+
+5)hive> create view Employee_view as select * from Employee where Salary>30000;
+OK
+Time taken: 0.521 seconds
+
+6)hive> select * from Employee_view;
+OK
+1101	Yamuna B S	Manager	45000
+1102	Raghavendra	Developer	40000
+1103	Obed Junias	Analyst	35000
+Time taken: 0.297 seconds, Fetched: 3 row(s)
+
+7)hive> alter table Employee add columns (Dept_ID int);
+OK
+Time taken: 0.109 seconds
+
+8)hive> load data local inpath '/home/yamunabs/Desktop/employee_dept.txt' overwrite into table Employee;
+Loading data to table employee.employee
+OK
+Time taken: 0.403 seconds
+
+9)hive> select * from Employee order by Dept_ID;
+OK
+1104	Niranjan V s	Operations	25000	8
+1103	Obed Junias	Analyst	35000	8
+1102	Raghavendra	Developer	40000	10
+1101	Yamuna B S	Manager	45000	10
+Time taken: 25.06 seconds, Fetched: 4 row(s)
+
+10)hive> select count(*),Dept_ID from Employee where Salary > 30000 group by Dept_ID;
+OK
+1	8
+2	10
+Time taken: 23.488 seconds, Fetched: 2 row(s)
+
+11)hive> create table if not exists Department (Dept_ID int , Dept_name String, Emp_ID int) row format delimited fields terminated by ',' lines terminated by '\n'; 
+OK
+Time taken: 0.197 seconds
+
+12)hive> load data local inpath '/home/yamunabs/Desktop/dept.txt' overwrite into table Department;
+Loading data to table employee.department
+OK
+Time taken: 0.327 seconds
+
+13)hive> select * from Department;
+OK
+8	Marketing	1103
+8	Marketing	1104
+10	Development	1101
+10	Development	1102
+Time taken: 0.141 seconds, Fetched: 4 row(s)
+
+14)hive> select e.Empl_ID, e.Emp_Name, e.Designation, e.Salary, e.Dept_ID, d.Dept_Name from Employee e join Department d ON (d.Dept_ID = e.Dept_ID);
+OK
+1101	Yamuna B S	Manager	45000	10	Development
+1101	Yamuna B S	Manager	45000	10	Development
+1102	Raghavendra	Developer	40000	10	Development
+1102	Raghavendra	Developer	40000	10	Development
+1103	Obed Junias	Analyst	35000	8	Marketing
+1103	Obed Junias	Analyst	35000	8	Marketing
+1104	Niranjan V s	Operations	25000	8	Marketing
+1104	Niranjan V s	Operations	25000	8	Marketing
+Time taken: 24.312 seconds, Fetched: 8 row(s)
